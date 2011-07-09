@@ -8,6 +8,7 @@ define('SERVER', 'go.urbanairship.com');
 define('BASE_URL', 'https://go.urbanairship.com/api');
 define('DEVICE_TOKEN_URL', BASE_URL . '/device_tokens/');
 define('PUSH_URL', BASE_URL . '/push/');
+define('BATCH_URL',  BASE_URL . '/push/batch/');
 define('BROADCAST_URL',  BASE_URL . '/push/broadcast/');
 define('FEEDBACK_URL', BASE_URL . '/device_tokens/feedback/');
 
@@ -178,6 +179,16 @@ class Airship {
         if ($response_code != 200) {
             throw new AirshipFailure($response[1], $response_code);
         }
+    }
+    
+    public function batch($payload)
+    {
+    	$body = json_encode($payload);
+ 		$response = $this->_request(BATCH_URL, 'POST', $body, 'application/json');
+ 		$response_code = $response[0];
+ 		if ($response_code != 200) {
+     		throw new AirshipFailure($response[1], $response_code);
+ 		} 	
     }
 
     // Broadcast this payload to all users.
